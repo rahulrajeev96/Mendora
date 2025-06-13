@@ -1,0 +1,34 @@
+# Node modules
+/node_modules/
+
+# Build output
+/dist/
+/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vite cache
+/.vite
+
+# VSCode settings
+.vscode/
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Ignore large video files
+/public/videos/
+
+# Optional: exclude other large local-only assets
+# /src/assets/videos/

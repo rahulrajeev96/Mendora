@@ -1,0 +1,36 @@
+
+
+.merged-card h1 {
+  font-size: 5rem;
+  font-weight: bold;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.static-text {
+  color: black;
+}
+
+.animated-text {
+  color: #5ef1ff;
+  margin-left: 0.5rem;
+}
+
+/* Animation */
+.slide-in {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.slide-in.animate {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
