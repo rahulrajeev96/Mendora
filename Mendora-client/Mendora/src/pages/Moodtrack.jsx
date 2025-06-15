@@ -1,95 +1,67 @@
-import React, { useState } from "react";
-import { Button, Form, Card, Row, Col, Alert } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import axios from 'axios';
 
 const MoodTrack = () => {
-  const [moodEmoji, setMoodEmoji] = useState("");
-  const [severity, setSeverity] = useState("");
-  const [sleepHours, setSleepHours] = useState("");
-  const [date, setDate] = useState("");
-  const [showMessage, setShowMessage] = useState(false);
+  const [mood, setMood] = useState('');
+  const [sleepHours, setSleepHours] = useState('');
+  const [notes, setNotes] = useState('');
 
-  const emojis = ["😊", "😐", "😔", "😡", "😭"];
-  const severityLevels = ["None", "Mild", "Moderate", "Severe"];
-
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const moodData = {
-      moodEmoji,
-      severity,
+      mood,
       sleepHours,
-      date,
+      notes,
+      date: new Date().toISOString().split('T')[0],
     };
-
-    // 🔒 You can POST this to your MongoDB backend using fetch or axios
-    console.log("Mood Record Submitted:", moodData);
-    setShowMessage(true);
-
-    setTimeout(() => setShowMessage(false), 3000);
-
-    // Clear form
-    setMoodEmoji("");
-    setSeverity("");
-    setSleepHours("");
-    setDate("");
+    await axios.post('/api/mood/track', moodData); // Backend endpoint
+    alert('Mood logged successfully!');
+    setMood('');
+    setSleepHours('');
+    setNotes('');
   };
 
   return (
-    <div style={{ padding: "30px", backgroundColor: "#f4f8fc", minHeight: "100vh" }}>
-      <h2 style={{ marginBottom: "20px" }}>🧘 Mood & Sleep Tracker</h2>
+    <Container className="mt-4">
+      <Card className="p-4 shadow">
+        <h2>Log Your Mood Today</h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Mood Severity</Form.Label>
+            <Form.Select value={mood} onChange={(e) => setMood(e.target.value)} required>
+              <option value="">Select Mood</option>
+              <option value="severe">😢 Severe</option>
+              <option value="moderate">😟 Moderate</option>
+              <option value="mild">🙂 Mild</option>
+              <option value="none">😄 None</option>
+            </Form.Select>
+          </Form.Group>
 
-      {showMessage && <Alert variant="success">Record saved successfully!</Alert>}
+          <Form.Group className="mb-3">
+            <Form.Label>Sleep (in hours)</Form.Label>
+            <Form.Control
+              type="number"
+              value={sleepHours}
+              onChange={(e) => setSleepHours(e.target.value)}
+              required
+            />
+          </Form.Group>
 
-      <Card style={{ padding: "20px", marginBottom: "20px" }}>
-        <h5>Select Your Mood</h5>
-        <div style={{ fontSize: "2rem", margin: "10px 0" }}>
-          {emojis.map((emo, idx) => (
-            <span
-              key={idx}
-              onClick={() => setMoodEmoji(emo)}
-              style={{
-                margin: "10px",
-                cursor: "pointer",
-                border: moodEmoji === emo ? "2px solid #333" : "none",
-                padding: "10px",
-                borderRadius: "10px",
-              }}
-            >
-              {emo}
-            </span>
-          ))}
-        </div>
+          <Form.Group className="mb-3">
+            <Form.Label>Notes (Optional)</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </Form.Group>
+
+          <Button variant="primary" type="submit">Submit</Button>
+        </Form>
       </Card>
-
-      <Card style={{ padding: "20px", marginBottom: "20px" }}>
-        <Form.Group className="mb-3">
-          <Form.Label>Mood Severity</Form.Label>
-          <Form.Select value={severity} onChange={(e) => setSeverity(e.target.value)}>
-            <option value="">-- Select Severity --</option>
-            {severityLevels.map((level, idx) => (
-              <option key={idx} value={level}>{level}</option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Sleep Hours</Form.Label>
-          <Form.Control
-            type="number"
-            value={sleepHours}
-            onChange={(e) => setSleepHours(e.target.value)}
-            placeholder="Enter number of hours you slept"
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Date</Form.Label>
-          <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-        </Form.Group>
-
-        <Button variant="primary" onClick={handleSubmit}>
-          Save Record
-        </Button>
-      </Card>
-    </div>
+    </Container>
   );
 };
 

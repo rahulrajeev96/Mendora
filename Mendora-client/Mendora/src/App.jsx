@@ -11,6 +11,11 @@ import Shareanony from './pages/Shareanony'
 import Loginpage from './pages/Loginpage'
 import RegisterPage from './pages/RegisterPage'
 import MoodGraph from './pages/Moodgraph'
+import MoodCalendar from './pages/Moodcalender'
+import MoodDashboard from './pages/Mooddashboard'
+
+
+
 
 
 
@@ -32,7 +37,10 @@ function App() {
       <Route path='/share-anonymously' element={<Shareanony/>} ></Route>
       <Route path='/login' element={<Loginpage/>}></Route>
       <Route path='/register' element={<RegisterPage />} />
-      <Route path='/mood-cal-graph' element={< MoodGraph/>}></Route>
+      <Route path='/mood-graph' element={< MoodGraph/>}></Route>
+      <Route path='/mood-calender' element={< MoodCalendar/>}></Route>
+     <Route path='/mood-dash' element={< MoodDashboard/>}></Route>
+     
      
       
 
